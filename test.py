@@ -42,8 +42,8 @@ class Phone(Field):
     #     return self.__private_value
 
 
-    # перевірка коректності номера. Додавання +38    
-    @Field.value.setter
+    # перевірка коректності номера. Додавання +38 
+    @Field.value.setter    
     # @value.setter
     def value(self, value):
         if value.isdigit():
@@ -57,17 +57,16 @@ class Phone(Field):
 
 class Birthday(Field):
 
-    # def __init__(self, value=None):
-    #     self.__private_value = None
-    #     self.value = value
+    def __init__(self, value=None):
+        self.__private_value = None
+        self.value = value
 
-    # @property
-    # def value(self):
-    #     return self.__private_value
+    @property
+    def value(self):
+        return self.__private_value
 
     # перевірка коректності номера. Додавання +38
-    @Field.value.setter
-    # @value.setter
+    @value.setter
     def value(self, value: str):
         try:
             self.__private_value = datetime.strptime(value, '%d/%m/%Y')
@@ -132,7 +131,7 @@ if __name__ == '__main__':
     assert isinstance(ab['Bill'].phones, list)
     assert isinstance(ab['Bill'].phones[0], Phone)
     print(ab['Bill'].days_to_birthday(birth))
-    # assert ab['Bill'].phones[0].value == '1234567890'
+    assert ab['Bill'].phones[0].value == '1234567890'
     
     print('All Ok)')
 
