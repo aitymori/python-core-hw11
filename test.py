@@ -51,13 +51,14 @@ class Phone(Field):
     # @Field.value.setter    
     @value.setter
     def value(self, value):
-        if value.isdigit() == True:
-            if len(value) == 12:
-                self.__private_value = "+" + value
-            elif len(value) < 12:
-                self.__private_value = "+38" + value
-        else:
-            raise Exception ('Wrong number.')
+        if value:
+            if value.isdigit() == True:
+                if len(value) == 12:
+                    self.__private_value = "+" + value
+                elif len(value) < 12:
+                    self.__private_value = "+38" + value
+            else:
+                raise Exception ('Wrong number.')
         
         
 
@@ -73,9 +74,10 @@ class Birthday(Field):
 
     # перевірка коректності номера. Додавання +38
     @value.setter
-    def value(self, value: str):
+    def value(self, value):
         try:
-            self.__private_value = datetime.strptime(value, '%d/%m/%Y').date()
+            if value != None:
+                self.__private_value = datetime.strptime(value, '%d/%m/%Y').date()
         except ValueError:
             print (f'Please, input the date in format dd/mm/yyyy ')     
 
@@ -86,8 +88,10 @@ class Record():
         self.name = name
         self.phones = list(phones)
         self.birthday = birthday
+
     def __repr__(self):
-        return f'{self.name}, phones: {self.phones}, birthday: {self.birthday.value}'
+        rec = f'{self.name}, phones: {self.phones}, birthday: {self.birthday.value}'
+        return rec
 
     def add_phone(self, value: Phone):
         self.phones.append(value)
@@ -123,13 +127,24 @@ class Record():
 
 class AddressBook(UserDict):
 
-    def __repr__(self):
+    # def __repr__(self):
         
-        counter = 0
-        for key, value in self.data.items():
-            print(f'{value}')
-            counter +=1
-        return (f'Printed {counter} contacts.')
+    #     counter = 0
+    #     for key, value in self.data.items():
+    #         print(f'{value}')
+    #         counter +=1
+    #     return (f'Printed {counter} contacts.')
+
+    def iterator(self):
+        for record in self.data.values():
+            yield record.__repr__()
+
+    def print_page(self, user_range=2):
+        for _ in range(user_range):
+            try:
+                print(next(ab))
+            except StopIteration:
+                print('The end of contact book. ')
 
     def add_record(self, record: Record):
         self.data[record.name.name] = record
@@ -159,11 +174,32 @@ if __name__ == '__main__':
     ab.add_record(rec)
     name = Name('Nasiya')
     phone = Phone('0554603025')
-    birth = Birthday('22/01/2010')
+    birth = Birthday()
+    rec = Record(name, birth, phone)
+    ab.add_record(rec)
+    name = Name('Anna')
+    phone = Phone('0994123425')
+    birth = Birthday('06/08/1999')
+    rec = Record(name, birth, phone)
+    ab.add_record(rec)
+    name = Name('German')
+    phone = Phone(None)
+    birth = Birthday('7/10/2000')
     rec = Record(name, birth, phone)
     ab.add_record(rec)
 
-    print(ab)
+    # Вивід всієї книги:
+    # print(ab)
+
+    ab = ab.iterator()
+    # Вивід по 1 запису:
+    # print(next(ab))
+    # print(next(ab))
+
+    # Вивід по 2 записи:
+    AddressBook.print_page(2)
+    AddressBook.print_page(2)
+    AddressBook.print_page(2)
 
 
 # AddressBook реалізує метод iterator, який повертає генератор за записами AddressBook
