@@ -25,7 +25,7 @@ class Name(Field):
         if value.isalpha():
             self.__private_name = value
         else:
-            raise Exception('Wrong name.')
+            raise ValueError('Wrong name.')
 
 class Phone(Field):
     
@@ -50,7 +50,7 @@ class Phone(Field):
                 elif len(value) < 12:
                     self.__private_value = "+38" + value
             else:
-                raise Exception ('Wrong number.')
+                raise ValueError('Wrong number.')
         
         
 
