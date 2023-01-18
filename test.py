@@ -4,13 +4,6 @@ from datetime import datetime
 
 class Field():
     pass
-    # def __init__(self, value=None):
-    #     self.__private_value = None
-    #     self.value = value
-
-    # @property
-    # def value(self):
-    #     return self.__private_value
     
 
 class Name(Field):
@@ -47,8 +40,7 @@ class Phone(Field):
     def value(self):
         return self.__private_value
 
-    # перевірка коректності номера. Додавання +38 
-    # @Field.value.setter    
+    # перевірка коректності номера. Додавання +38    
     @value.setter
     def value(self, value):
         if value:
@@ -127,14 +119,6 @@ class Record():
 
 class AddressBook(UserDict):
 
-    # def __repr__(self):
-        
-    #     counter = 0
-    #     for key, value in self.data.items():
-    #         print(f'{value}')
-    #         counter +=1
-    #     return (f'Printed {counter} contacts.')
-
     def iterator(self):
         for record in self.data.values():
             yield record.__repr__()
@@ -196,11 +180,6 @@ if __name__ == '__main__':
     # print(next(ab))
     # print(next(ab))
 
-    # Вивід по 2 записи:
-    AddressBook.print_page(2)
-    AddressBook.print_page(2)
-    AddressBook.print_page(2)
-
-
-# AddressBook реалізує метод iterator, який повертає генератор за записами AddressBook
-# і за одну ітерацію повертає уявлення для N записів.
+    # Вивід по user_range записів:
+    AddressBook.print_page(AddressBook, 3)
+    AddressBook.print_page(AddressBook, 3)
